@@ -1,0 +1,44 @@
+/* CC0 - free software.
+To the extent possible under law, all copyright and related or neighboring
+rights to this work are waived. See the LICENSE file for more information. */
+
+// Test project to call, suspend and resume a C program from Java
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'c'
+}
+
+mainClassName = 'org.example.javacall.CCallTest'
+
+model {
+    platforms {
+        linux   { operatingSystem "linux"   }
+        windows { operatingSystem "windows" }
+    }
+    
+    components { main(NativeExecutableSpec) {
+        targetPlatform "linux"
+        targetPlatform "windows"
+        binaries.all {
+            linker.args "-pthread"
+            if (targetPlatform == platforms.windows) {
+                linker.args << "-static"
+            }
+        }
+    }}
+    
+    // linux-to-windows gcc cross-compilation toolchain
+    toolChains { gcc(Gcc) { target("windows") { tools ->
+        if(System.properties["os.name"].toLowerCase().contains("linux")) {
+            tools.cCompiler.executable "x86_64-w64-mingw32-gcc"
+            // Use -gcc instead of -ld as linker command as well.
+            tools.linker.executable "x86_64-w64-mingw32-gcc"
+        }
+    }}}
+}
+
+// run only after C files have been compiled
+run.dependsOn build
+run.mustRunAfter build

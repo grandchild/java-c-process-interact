@@ -9,7 +9,7 @@ Just a small test project to get the following done:
 * while getting its output at the same time,
 * and all from a single Gradle buildfile.
 
-#### Run it
+#### Run it (Linux)
 
 ```
 ./gradlew clean run
@@ -31,6 +31,34 @@ $JAVA_HOME/bin/java -cp build/classes/main \
   org.example.javacall.CCallTest build/exe/main/windows/main.exe
 ```
 
+#### Run it (Windows)
+You need a JDK (8+) and [MinGW-w64](https://mingw-w64.org/doku.php/download) installed. Then have the environment variables JAVA_HOME point to the JDK path and have PATH include the path to mingw64/bin.
+
+If those two environment variable values are present, then you can simply, from a terminal in the project directory, run
+```
+gradlew.bat clean run
+```
+
+#### Output
+The result should look like this:
+```
+C:   1
+C:   2
+C:   3
+C:   4
+C:   5
+C:   6
+J: Sending pause
+C: Paused
+C: ...
+C: ...
+J: Sending resume
+C: Resumed
+C:   7
+C:   8
+J: Closing stdin stream
+C: Parent finished
+```
 
 #### License
 [![License

@@ -27,7 +27,7 @@ public class CCallTest {
         if(args.length >= 1) {
             System.out.println("Using custom binary path");
             cProgram = args[0];
-        } else if(System.getProperty("os.name") == "Linux") {
+        } else if(System.getProperty("os.name").equals("Linux")) {
             cProgram = "build/exe/main/linux/main";
         } else {
             cProgram = "build/exe/main/windows/main.exe";
